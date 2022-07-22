@@ -26,7 +26,10 @@ jpxFrame = pd.json_normalize(jpxFile["Waypoints"])
 
 #Loops Indefinitely (Well Until The Quit Option Is Picked) Allowing All The Tools To Be Used On File Without Having To Keep Re-Running The Program
 while True:
-    print("Modes:\n- RG | Route Graph: Creates A Route Map With Colours Representing Either Speed Or Elevation")
+    print("""Modes:
+    - RG | Route Graph: Creates A Route Map With Colours Representing Either Speed Or Elevation
+    - T | Telemetry: Creates A Telemetry Graph Showing Speed And Elevation
+    - Q | Quit""")
     modeInput = str(input())
 
     if modeInput.lower() == "rg" or modeInput.lower() == "route graph":
@@ -35,4 +38,18 @@ while True:
         print("Enter A Specific Lap Number, Or 0 For All Laps")
         optionInput2 = int(input())
 
-        Graphs.RouteGraph(jpxFrame, optionInput2, jpxFile["Name"])
+        if optionInput1.lower() == "s":
+            Graphs.RouteGraph(jpxFrame, "Speed", optionInput2, jpxFile["Name"])
+        elif optionInput1.lower() == "e":
+            Graphs.RouteGraph(jpxFrame, "Elevation", optionInput2, jpxFile["Name"])
+        else:
+            print("Invalid Options")
+
+    if modeInput.lower() == "t" or modeInput.lower() == "telemetry":
+        print("Enter A Specific Lap Number, Or 0 For All Laps")
+        optionInput1 = int(input())
+
+        Graphs.Telemetry(jpxFrame, optionInput1)
+
+    elif modeInput.lower() == "q" or modeInput.lower() == "quit":
+        quit()
