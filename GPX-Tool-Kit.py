@@ -45,7 +45,7 @@ while True:
         else:
             print("Invalid Options")
 
-    if modeInput.lower() == "t" or modeInput.lower() == "telemetry":
+    elif modeInput.lower() == "t" or modeInput.lower() == "telemetry":
         print("Enter A Specific Lap Number, Or 0 For All Laps")
         optionInput1 = int(input())
 

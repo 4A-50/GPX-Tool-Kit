@@ -1,8 +1,10 @@
 #<editor-fold desc="Imports">
 import gpxpy.gpx
 from geopy import distance
+from haversine import haversine, Unit
 
 import pandas as pd
+import numpy as np
 
 import json
 from datetime import datetime
@@ -78,6 +80,19 @@ def ConvertFile(url, isLaps, outUrl):
 
                 #Increment The Loop Count
                 loopCount += 1
+
+    #For Some Unknown Reason Doing The Local Distance Calculation Inside The Prev Loops Just Doesn't F'ing Work But Here It Does?
+    localDistances = []
+    for i in range(len(gpxFrame)):
+        if i == 0:
+            localDistances.append(0.0)
+        else:
+            localDistances.append(np.round(haversine((gpxFrame.iloc[i - 1]['Lat'], gpxFrame.iloc[i - 1]['Long']),(gpxFrame.iloc[i]['Lat'], gpxFrame.iloc[i]['Long']), unit=Unit.METERS), 2))
+
+    #Adds The Distance Array To The DataFrame
+    gpxFrame['Distance'] = localDistances
+    #Then Works Out The Cumulative Distance
+    gpxFrame['CDistance'] = gpxFrame['Distance'].cumsum()
 
     #Now We Have All The Points In The DataFrame We Can Move To Converting This To A JPX File
     jpxContents = {

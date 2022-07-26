@@ -1,13 +1,9 @@
 #<editor-fold desc="Imports">
-import pandas as pd
-
 import numpy as np
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 from matplotlib.collections import LineCollection
 from matplotlib import cycler
-
-from datetime import datetime
 #</editor-fold>
 
 #<editor-fold desc="Set Up's">
@@ -85,7 +81,7 @@ def RouteGraph(jpxFrame, colorVal, outLapNum, fileName):
 
 def Telemetry(jpxFrame, outLapNum):
     #Sets Up Plot Ratios And Sizes
-    plotSize = [15, 15]
+    plotSize = [15, 7]
     plotRatios = [3, 3]
 
     # If All Laps Are Wanted Just Send The Whole DataFrame In
@@ -95,27 +91,22 @@ def Telemetry(jpxFrame, outLapNum):
     else:
         lapFrame = jpxFrame[jpxFrame['Lap'] == outLapNum]
 
-    timeFrame = lapFrame['Time']
-
-    for i in timeFrame:
-        timeFrame.replace(i, i.time())
-
     # Increase The Plot Size
     plt.rcParams['figure.figsize'] = plotSize
 
     # Creates The Plot
-    fig, ax = plt.subplots(2, gridspec_kw={'height_ratios': plotRatios}, sharex =True)
+    fig, ax = plt.subplots(2, gridspec_kw={'height_ratios': plotRatios}, sharex=True)
 
     # Sets The Plots Title
     ax[0].title.set_text("Telemetry")
 
     # Plots
-    ax[0].plot(timeFrame, lapFrame['Speed'], color="#FF0000", label="Speed")
+    ax[0].plot((lapFrame['CDistance'] / 1000), lapFrame['Speed'], color="#FF0000", label="Speed")
     ax[0].set(ylabel='Speed')
 
-    ax[1].plot(timeFrame, lapFrame['Elevation'], color="#00FF00", label="Elevation")
+    ax[1].plot((lapFrame['CDistance'] / 1000), lapFrame['Elevation'], color="#00FF00", label="Elevation")
     ax[1].set(ylabel='Elevation')
-    ax[1].set(xlabel='Time')
+    ax[1].set(xlabel='Distance (KM)')
 
     # Cleans Up The Tick Labels
     for a in ax:
