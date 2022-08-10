@@ -4,6 +4,7 @@ import os.path as path
 
 import Serialization
 import Graphs
+import Console
 #</editor-fold>
 
 #Var Holders For The File URl
@@ -29,6 +30,8 @@ while True:
     print("""Modes:
     - RG | Route Graph: Creates A Route Map With Colours Representing Either Speed Or Elevation
     - T | Telemetry: Creates A Telemetry Graph Showing Speed And Elevation
+    - LT | Lap Times: Displays The Lap Times
+    - ST | Sector Times: Displays The Sector Times Of A Specified Lap
     - Q | Quit""")
     modeInput = str(input())
 
@@ -50,6 +53,15 @@ while True:
         optionInput1 = int(input())
 
         Graphs.Telemetry(jpxFrame, optionInput1)
+
+    elif modeInput.lower() == "lt" or modeInput.lower() == "lap times":
+        Console.LapTimes(jpxFrame)
+
+    elif modeInput.lower() == "st" or modeInput.lower() == "sector times":
+        print("Enter A Specific Lap Number")
+        optionInput1 = int(input())
+
+        Console.SectorTimes(jpxFrame, optionInput1)
 
     elif modeInput.lower() == "q" or modeInput.lower() == "quit":
         quit()
